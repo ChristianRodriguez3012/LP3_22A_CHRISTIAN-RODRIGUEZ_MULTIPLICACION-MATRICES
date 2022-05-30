@@ -2,12 +2,23 @@
 ##Cada función será asignada a un thread (si está disponible) para cumplir su función
 ##Se crearon funciones de prueba para poder ver el funcionamiento paso a paso de los threads, estas funciones aun pueden ser activadas, solo se debe borrar un "#" de cada oración que tenga doble numeral ("##").
 
+print("MULTIPLICACIÓN DE MATRICES (UTILIZANDO THREADS)")
+print("por: Christian Rodriguez")
+
 ##Importando Librerias necesarias: Random y Numpy
 from random import randint
 import numpy as np 
+#Libreria para cronometrar los tiempos de ejecución
+from timeit import default_timer
+
 
 ##Definiendo N para generar las matrices 1 y 2
 VariableN = int(input("DEFINIR N: "))
+
+
+#iniciar Cronometro THREADS
+inicioThr = default_timer()
+
 
 ##Generando la matriz 1
 print ("\n MATRIZ 1:")
@@ -64,7 +75,36 @@ from concurrent.futures import Executor, ThreadPoolExecutor
 
 if __name__ == '__main__':
 ##Observando tareas enviadas a los threads
-    Executor = ThreadPoolExecutor (max_workers=3)
+##La variable "max_workers" en la siguiente línea asigna la cantidad de threads que se utilizarán para llegar al resultado final
+    Executor = ThreadPoolExecutor (max_workers=2)
     Executor.submit(print("\nEL THREAD ESTÁ EN:\n",llenar_matriz1))
     Executor.submit(print("\nEL THREAD ESTÁ EN:\n",llenar_matriz2))
     Executor.submit (print("\nRESULTADO:\n",resultado))
+
+
+#finalizar Cronometro THREADS
+finThr = default_timer()
+#Imprimiento Cronometro THREADS
+print ("TIEMPO DE EJECUCIÓN:", finThr-inicioThr)
+
+infoThreads = [finThr-inicioThr]
+
+#Fecha y Hora del cálculo
+Formato = "%c"
+FyHThreads = str(time.strftime(Formato))
+print ("FECHA Y HORA DE EJECUCIÓN:", FyHThreads)
+
+#Guardando tiempos de ejecución
+print ("GUARDANDO RESULTADOS EN 'RegistroThreads.dat'")
+#el "a" anexa todos los resultados, mientras que "w" solo guarda el último resultado
+ArchivoThreads= open("RegistroThreads.dat", "a")
+ArchivoThreads.write("\n El ultimo tiempo registrado es:")
+ArchivoThreads.write(str(infoThreads))
+ArchivoThreads.write("\n Fecha y hora: ")
+ArchivoThreads.write(str(FyHThreads))
+ArchivoThreads.close()
+
+#Guardaremos unicamente los tiempos en otro archivo ".dat" de nombre "TimeThreads.dat"
+TimeThreads= open("TimeThreads.dat", "a")
+TimeThreads.write(str(infoThreads))
+TimeThreads.close()
